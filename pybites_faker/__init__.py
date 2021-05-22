@@ -9,6 +9,9 @@ import feedparser
 import requests
 from faker.providers import BaseProvider
 
+from .exceptions import NoDataForCriteria
+
+
 TMP = getenv("TMP", "/tmp")
 PYBITES_FAKER_DIR = Path(getenv("PYBITES_FAKER_DIR", TMP))
 CACHE_FILENAME = "pybites-fake-data.pkl"
@@ -16,11 +19,6 @@ FAKE_DATA_CACHE = PYBITES_FAKER_DIR / CACHE_FILENAME
 
 Bite = namedtuple("Bite", "number title level")
 Article = namedtuple("Article", "author title tags")
-
-
-class NoDataForCriteria(IndexError):
-    """Exception that is thrown when no valid data is found
-       for filter criteria specified by the user."""
 
 
 class PyBitesData:

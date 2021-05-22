@@ -6,8 +6,8 @@ import pytest
 import pybites_faker
 from pybites_faker import (CACHE_FILENAME,
                            PyBitesProvider,
-                           NoDataForCriteria,
                            Bite, Article)
+from pybites_faker.exceptions import NoDataForCriteria
 
 LEVELS = ["intro", "beginner",
           "intermediate", "advanced"]
