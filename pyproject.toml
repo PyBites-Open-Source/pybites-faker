@@ -7,11 +7,11 @@ authors = ["Bob Belderbos <bobbelderbos@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 Faker = "^8.2.1"
+feedparser = "^6.0.2"
+requests = "^2.25.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
-feedparser = "^6.0.2"
-requests = "^2.25.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
