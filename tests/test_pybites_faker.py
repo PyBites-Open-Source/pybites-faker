@@ -9,15 +9,6 @@ LEVELS = ["intro", "beginner",
           "intermediate", "advanced"]
 
 
-def test_str_representation(pb_faker):
-    actual = str(pb_faker.data)
-    pat = re.compile(
-        (r'^Articles => \d+ objects\n'
-         r'Bites => \d+ objects\n$')
-    )
-    assert pat.match(actual)
-
-
 def test_bite(pb_faker):
     bite = pb_faker.bite()
     assert type(bite) == Bite
