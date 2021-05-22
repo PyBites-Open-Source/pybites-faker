@@ -1,8 +1,10 @@
-## PyBites Faker
+PyBites Faker
+=============
 
 This package is an extension of the awesome `faker` package. It brings together a bunch of PyBites objects that can be randomly chosen. We started with our Bites and articles, but we can add more objects based on our content or personal preferences (think music for example).
 
-### Setup
+Setup
+-----
 
 You can get the package with:
 
@@ -60,7 +62,8 @@ Article(author='PyBites', title='Code Challenge 29 - Create a Simple Django App'
 ['productivity', 'motivation', 'mindset', 'fear']
 ```
 
-### Run the tests
+Tests
+-----
 
 You can run the tests with:
 
