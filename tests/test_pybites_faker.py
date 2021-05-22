@@ -68,7 +68,7 @@ def test_python_article(pb_faker):
 
 def test_wrong_object_searched(pb_faker):
     with pytest.raises(NoDataForCriteria):
-        pb_faker._get_one("ninjas")
+        pb_faker.get_one("ninjas")
 
 
 @pytest.mark.parametrize("method, kwargs", [

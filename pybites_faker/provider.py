@@ -12,7 +12,7 @@ class PyBitesProvider(BaseProvider):
         self.data = create_pb_data_object()
         super().__init__(*args, **kwargs)
 
-    def _get_one(self, pb_obj, **kwargs):
+    def get_one(self, pb_obj, **kwargs):
         data = getattr(self.data, pb_obj, None)
         if data is None:
             raise NoDataForCriteria(
@@ -39,7 +39,7 @@ class PyBitesProvider(BaseProvider):
         return random.choice(data)
 
     def bite(self, **kwargs):
-        return self._get_one("bites", **kwargs)
+        return self.get_one("bites", **kwargs)
 
     def bite_str(self):
         bite = self.bite()
@@ -60,7 +60,7 @@ class PyBitesProvider(BaseProvider):
         return self.bite(level="advanced")
 
     def article(self, **kwargs):
-        return self._get_one("articles", **kwargs)
+        return self.get_one("articles", **kwargs)
 
     def python_article(self):
         return self.article(tags="python")
