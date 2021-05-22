@@ -137,6 +137,6 @@ class PyBitesProvider(BaseProvider):
 if __name__ == "__main__":
     pbf = PyBitesProvider()
     print(pbf.data)
+
     from pprint import pprint as pp
-    breakpoint()
     pp(pbf.article(tags='pandas'))
