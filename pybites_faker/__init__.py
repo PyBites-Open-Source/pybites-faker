@@ -11,7 +11,8 @@ from faker.providers import BaseProvider
 
 TMP = getenv("TMP", "/tmp")
 PYBITES_FAKER_DIR = Path(getenv("PYBITES_FAKER_DIR", TMP))
-FAKE_DATA_CACHE = PYBITES_FAKER_DIR / "pybites-fake-data.pkl"
+CACHE_FILENAME = "pybites-fake-data.pkl"
+FAKE_DATA_CACHE = PYBITES_FAKER_DIR / CACHE_FILENAME
 
 Bite = namedtuple("Bite", "number title level")
 Article = namedtuple("Article", "author title tags")
@@ -80,7 +81,7 @@ class PyBitesProvider(BaseProvider):
         self.data = data or create_pb_data_object()
 
     def _get_one(self, pb_obj, **kwargs):
-        data = getattr(self.data, pb_obj)
+        data = getattr(self.data, pb_obj, None)
         if data is None:
             raise NoDataForCriteria(
                 f"{pb_obj} is not a valid PyBites object"
@@ -108,8 +109,29 @@ class PyBitesProvider(BaseProvider):
     def bite(self, **kwargs):
         return self._get_one("bites", **kwargs)
 
+    def bite_str(self):
+        bite = self.bite()
+        number = str(bite.number).zfill(2)
+        return (f"{bite.level} Bite #{number}. "
+                f"{bite.title}")
+
+    def intro_bite(self):
+        return self.bite(level="intro")
+
+    def beginner_bite(self):
+        return self.bite(level="beginner")
+
+    def intermediate_bite(self):
+        return self.bite(level="intermediate")
+
+    def advanced_bite(self):
+        return self.bite(level="advanced")
+
     def article(self, **kwargs):
         return self._get_one("articles", **kwargs)
+
+    def python_article(self):
+        return self.article(tags="python")
 
 
 if __name__ == "__main__":
