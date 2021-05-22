@@ -12,6 +12,10 @@ pip install pybites-faker
 
 We included the code to get the initial data so it updates as we add more content.
 
-We cache the data in a pickle file which is stored in `/tmp` by default. To store this file somewhere else set the `PYBITES_FAKER_DIR` environment variable.
+We cache the data in a pickle file which is stored in `/tmp` by default. To store this file somewhere else set the `PYBITES_FAKER_DIR` environment variable, for example:
+
+```
+export PYBITES_FAKER_DIR=/Users/bbelderbos/code/pybites-faker
+```
 
 Then you can get random PyBites objects like:
