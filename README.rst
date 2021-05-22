@@ -6,11 +6,9 @@ This package is an extension of the awesome `faker` package. It brings together 
 Setup
 -----
 
-You can get the package with:
+You can get the package with:::
 
-```
-pip install pybites-faker
-```
+    pip install pybites-faker
 
 We included the code to get the initial data so it updates as we add more content.
 
