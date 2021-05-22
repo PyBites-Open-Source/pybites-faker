@@ -1,3 +1,0 @@
-class PyBitesData:
-    bites = []
-    articles = []

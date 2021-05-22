@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from operator import itemgetter
 import pickle
 
@@ -8,7 +9,12 @@ from .constants import (FAKE_DATA_CACHE,
                         BITE_FEED,
                         BLOG_FEED,
                         Bite, Article)
-from .data import PyBitesData
+
+
+@dataclass
+class PyBitesData:
+    bites: list[Bite]
+    articles: list[Article]
 
 
 def _get_bites():
@@ -38,11 +44,6 @@ def create_pb_data_object(cache=FAKE_DATA_CACHE, force_reload=False):
     if not cache.exists() or force_reload:
         _cache_data(cache)
 
-    pb_data = PyBitesData()
-
     with open(cache, 'rb') as infile:
         data = pickle.load(infile)
-        for k, v in data.items():
-            setattr(pb_data, k, v)
-
-    return pb_data
+        return PyBitesData(**data)
