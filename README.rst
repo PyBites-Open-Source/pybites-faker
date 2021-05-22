@@ -8,15 +8,21 @@ We started with our Bites and articles, but we can add more objects based on our
 Setup
 -----
 
-You can get the package with::
+The package is not yet on PyPI, so you can play with it doing the following::
 
-    pip install pybites-faker
-
-We included the code to get the initial data so it updates as we add more content.
+    $ git clone git@github.com:bbelderbos/pybites-faker.git
+    $ cd pybites-faker
+    $ poetry install
+    $ ipython
+    In [1]: from pybites_faker import PyBitesProvider
+    In [2]: pbp = PyBitesProvider()
+    In [3]: pbp.bite()
+    Out[3]: Bite(number=176, title='Create a variable length chessboard', level='Beginner')
+    ...
 
 We cache the data in a pickle file which is stored in `/tmp` by default. To store this file somewhere else set the `PYBITES_FAKER_DIR` environment variable, for example::
 
-    export PYBITES_FAKER_DIR=/Users/bbelderbos/code/pybites-faker
+    $ export PYBITES_FAKER_DIR=$HOME/Downloads/pybites-faker
 
 Then you can get random PyBites objects like::
 
