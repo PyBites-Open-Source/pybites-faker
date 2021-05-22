@@ -1,5 +1,4 @@
 from .exceptions import NoDataForCriteria
-from .provider import (CACHE_FILENAME,
-                       create_pb_data_object,
-                       PyBitesProvider,
-                       Bite, Article)
+from .caching import create_pb_data_object
+from .provider import PyBitesProvider
+from .constants import Bite, Article, CACHE_FILENAME
