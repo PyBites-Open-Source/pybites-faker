@@ -6,7 +6,7 @@ This package is an extension of the awesome `faker` package. It brings together 
 Setup
 -----
 
-You can get the package with:::
+You can get the package with:
 
     pip install pybites-faker
 
@@ -14,9 +14,7 @@ We included the code to get the initial data so it updates as we add more conten
 
 We cache the data in a pickle file which is stored in `/tmp` by default. To store this file somewhere else set the `PYBITES_FAKER_DIR` environment variable, for example:
 
-```
-export PYBITES_FAKER_DIR=/Users/bbelderbos/code/pybites-faker
-```
+    export PYBITES_FAKER_DIR=/Users/bbelderbos/code/pybites-faker
 
 Then you can get random PyBites objects like:
 
