@@ -8,8 +8,9 @@ from .caching import create_pb_data_object
 
 class PyBitesProvider(BaseProvider):
 
-    def __init__(self, data=None):
-        self.data = data or create_pb_data_object()
+    def __init__(self, *args, **kwargs):
+        self.data = create_pb_data_object()
+        super().__init__(*args, **kwargs)
 
     def _get_one(self, pb_obj, **kwargs):
         data = getattr(self.data, pb_obj, None)

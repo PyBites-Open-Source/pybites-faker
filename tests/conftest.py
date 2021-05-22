@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from faker import Faker
 import pytest
 
 from pybites_faker import (CACHE_FILENAME,
@@ -40,4 +41,6 @@ def data(user_cache, cache):
 
 @pytest.fixture(scope="session")
 def pb_faker(data):
-    return PyBitesProvider(data)
+    fake = Faker()
+    fake.add_provider(PyBitesProvider)
+    return fake
