@@ -1,18 +1,25 @@
 from collections import namedtuple
 from operator import itemgetter
-import os
+from os import getenv
 from pathlib import Path
 import pickle
+import random
 
 import feedparser
 import requests
+from faker.providers import BaseProvider
 
-TMP = os.getenv("TMP", "/tmp")
-PYBITES_FAKER_DIR = Path(os.getenv("PYBITES_FAKER_DIR", TMP))
+TMP = getenv("TMP", "/tmp")
+PYBITES_FAKER_DIR = Path(getenv("PYBITES_FAKER_DIR", TMP))
 FAKE_DATA_CACHE = PYBITES_FAKER_DIR / "pybites-fake-data.pkl"
 
 Bite = namedtuple("Bite", "number title level")
 Article = namedtuple("Article", "author title tags")
+
+
+class NoDataForCriteria(IndexError):
+    """Exception that is thrown when no valid data is found
+       for filter criteria specified by the user."""
 
 
 class PyBitesData:
@@ -67,10 +74,47 @@ def create_pb_data_object(cache=FAKE_DATA_CACHE, force_reload=False):
     return pb_data
 
 
-def main():
-    data = create_pb_data_object()
-    print(str(data))
+class PyBitesProvider(BaseProvider):
+
+    def __init__(self, data=None):
+        self.data = data or create_pb_data_object()
+
+    def _get_one(self, pb_obj, **kwargs):
+        data = getattr(self.data, pb_obj)
+        if data is None:
+            raise NoDataForCriteria(
+                f"{pb_obj} is not a valid PyBites object"
+            )
+
+        first = data[0]
+        if bool(set(kwargs.keys()) - set(first._fields)):
+            raise ValueError(
+                f"One or more invalid kw args: {kwargs}, "
+                f"valid filters are: {first._fields}"
+            )
+
+        for k, v in kwargs.items():
+            data = [row for row in data
+                    if str(v).lower() in
+                    str(getattr(row, k)).lower()]
+
+        if not data:
+            raise NoDataForCriteria(
+                f"No results for filter criteria: {kwargs}"
+            )
+
+        return random.choice(data)
+
+    def bite(self, **kwargs):
+        return self._get_one("bites", **kwargs)
+
+    def article(self, **kwargs):
+        return self._get_one("articles", **kwargs)
 
 
 if __name__ == "__main__":
-    main()
+    pbf = PyBitesProvider()
+    print(pbf.data)
+    from pprint import pprint as pp
+    breakpoint()
+    pp(pbf.article(tags='pandas'))
