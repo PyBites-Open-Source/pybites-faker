@@ -2,8 +2,8 @@ import re
 
 import pytest
 
-from pybites_faker import Bite, Article
-from pybites_faker.exceptions import NoDataForCriteria
+from pybites_faker import (Bite, Article,
+                           NoDataForCriteria)
 
 LEVELS = ["intro", "beginner",
           "intermediate", "advanced"]
@@ -28,7 +28,7 @@ def test_bite_str(pb_faker):
     bite = pb_faker.bite_str()
     levels = "|".join(level.title() for level in LEVELS)
     pat = re.compile(
-        rf"^({levels})\sBite #\d+\.\s[\w ]+$")
+        rf"^({levels})\sBite #\d+\.\s.*$")
     assert pat.match(bite)
 
 

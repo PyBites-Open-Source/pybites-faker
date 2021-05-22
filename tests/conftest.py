@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-import pybites_faker
 from pybites_faker import (CACHE_FILENAME,
+                           create_pb_data_object,
                            PyBitesProvider)
 
 
@@ -31,7 +31,7 @@ def data(user_cache, cache):
         cache = Path(user_cache)
 
     force_reload = not cache.exists()
-    data = pybites_faker.create_pb_data_object(
+    data = create_pb_data_object(
         cache=cache,
         force_reload=force_reload)
 
