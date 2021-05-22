@@ -19,3 +19,57 @@ export PYBITES_FAKER_DIR=/Users/bbelderbos/code/pybites-faker
 ```
 
 Then you can get random PyBites objects like:
+
+```
+>>> from pybites_faker import PyBitesProvider
+>>> pbp = PyBitesProvider()
+
+# data so far:
+>>> print(pbp.data)
+Articles => 393 objects
+Bites => 328 objects
+
+# get a random Bite
+>>> pbp.bite()
+Bite(number=228, title='Create a Gravatar URL', level='Intermediate')
+
+# filter:
+>>> pbp.bite(level="beginner")
+Bite(number=279, title='Armstrong numbers', level='Beginner')
+>>> pbp.bite_str()
+'Intermediate Bite #199. Multiple inheritance (__mro__)'
+
+# get an article
+>>> pbp.article()
+Article(author='PyBites', title='Code Challenge 29 - Create a Simple Django App', tags=['codechallenges', 'Django', '100DaysOfDjango'])
+
+# filter:
+>>> art = pbp.article(title="pandas")
+>>> art.author
+'Cedric Sambre'
+>>> art.title
+'Analyzing covid-19 data with pandas and matplotlib'
+>>> art.tags
+['guest', 'pandas', 'matplotlib', 'data analysis']
+>>> art = pbp.article(tags="mindset")
+>>> art.author
+'Julian'
+>>> art.title
+'Break Fear to Boost Productivity'
+>>> art.tags
+['productivity', 'motivation', 'mindset', 'fear']
+```
+
+### Run the tests
+
+You can run the tests with:
+
+```
+poetry run pytest
+```
+
+If you run them often you might want to give it the cache file as argument:
+
+```
+poetry run pytest --cache=/tmp/pybites-fake-data.pkl
+```
