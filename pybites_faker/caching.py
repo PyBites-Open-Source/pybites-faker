@@ -45,8 +45,8 @@ def _cache_data(cache):
         pickle.dump(data, outfile)
 
 
-def create_pb_data_object(cache=FAKE_DATA_CACHE, force_reload=False):
-    if not cache.exists() or force_reload:
+def create_pb_data_object(cache=FAKE_DATA_CACHE):
+    if not cache.exists():
         _cache_data(cache)
 
     with open(cache, 'rb') as infile:
