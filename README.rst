@@ -24,6 +24,10 @@ The package is not yet on PyPI, so you can play with it doing the following::
     datetime.date(2019, 12, 19)
     >>> fake.pybites_cofounder()
     'Julian'
+    >>> fake.pybites_tag()
+    ['requests']
+    >>> fake.pybites_tag(n=3)
+    ['flask', 'machine learning', 'opencv']
     ...
 
 We cache the data in a pickle file which is stored in `/tmp` by default. To store this file somewhere else set the `PYBITES_FAKER_DIR` environment variable, for example::
