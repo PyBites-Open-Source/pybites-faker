@@ -10,6 +10,7 @@ from .static_data import FOUNDERS, START_DATE, TODAY
 
 
 class PyBitesProvider(BaseProvider):
+    """Provider for Faker which adds PyBites data."""
 
     def __init__(self, *args, **kwargs):
         self.data = create_pb_data_object()
