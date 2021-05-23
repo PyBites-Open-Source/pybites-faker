@@ -1,3 +1,4 @@
+from datetime import date
 import re
 
 import pytest
@@ -91,3 +92,15 @@ def test_wrong_search_kwargs(pb_faker, method, kwargs):
 def test_no_matching_objects(pb_faker, method, kwargs):
     with pytest.raises(NoDataForCriteria):
         getattr(pb_faker, method)(**kwargs)
+
+
+def test_pybites_cofounder(pb_faker):
+    assert pb_faker.pybites_cofounder() in {"Bob", "Julian"}
+
+
+def test_pybites_birthday(pb_faker):
+    bday = pb_faker.pybites_birthday()
+    possible_years = list(range(2016, date.today().year + 1))
+    assert bday.day == 19
+    assert bday.month == 12
+    assert bday.year in possible_years

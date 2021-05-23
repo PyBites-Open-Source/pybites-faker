@@ -4,6 +4,7 @@ from faker.providers import BaseProvider
 
 from .exceptions import NoDataForCriteria
 from .caching import create_pb_data_object
+from .static_data import FOUNDERS, START_DATE, TODAY
 
 
 class PyBitesProvider(BaseProvider):
@@ -64,6 +65,15 @@ class PyBitesProvider(BaseProvider):
 
     def python_article(self):
         return self.article(tags="python")
+
+    def pybites_cofounder(self):
+        return random.choice(FOUNDERS)
+
+    def pybites_birthday(self):
+        year = random.choice(
+            range(START_DATE.year, TODAY.year + 1)
+        )
+        return START_DATE.replace(year=year)
 
 
 if __name__ == "__main__":
