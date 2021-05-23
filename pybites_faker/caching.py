@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from operator import itemgetter
+import os
 import pickle
 
 import feedparser
@@ -32,10 +33,14 @@ def _get_articles():
 
 
 def _cache_data(cache):
+    if not cache.parent.is_dir():
+        os.makedirs(cache.parent)
+
     data = {
         "bites": list(_get_bites()),
         "articles": list(_get_articles()),
     }
+
     with open(cache, 'wb') as outfile:
         pickle.dump(data, outfile)
 
