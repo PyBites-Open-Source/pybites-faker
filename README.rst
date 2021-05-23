@@ -13,56 +13,77 @@ The package is not yet on PyPI, so you can play with it doing the following::
     $ git clone git@github.com:bbelderbos/pybites-faker.git
     $ cd pybites-faker
     $ poetry install
-    $ ipython
-    In [1]: from pybites_faker import PyBitesProvider
-    In [2]: pbp = PyBitesProvider()
-    In [3]: pbp.bite()
-    Out[3]: Bite(number=176, title='Create a variable length chessboard', level='Beginner')
+    $ poetry run python
+    >>> from faker import Faker
+    >>> from pybites_faker import PyBitesProvider
+    >>> fake = Faker()
+    >>> fake.add_provider(PyBitesProvider)
+    >>> fake.bite()
+    Bite(number=157, title='Filter out accented characters', level='Intermediate')
+    >>> fake.pybites_birthday()
+    datetime.date(2019, 12, 19)
+    >>> fake.pybites_cofounder()
+    'Julian'
     ...
 
 We cache the data in a pickle file which is stored in `/tmp` by default. To store this file somewhere else set the `PYBITES_FAKER_DIR` environment variable, for example::
 
     $ export PYBITES_FAKER_DIR=$HOME/Downloads/pybites-faker
 
-Then you can get random PyBites objects like::
+If the `pybites-faker` directory does not exist it creates it (not recursively though).
 
-    >>> from pybites_faker import PyBitesProvider
-    >>> pbp = PyBitesProvider()
+Some more functionality (continuation previous REPL session)::
 
-    # data so far:
-    >>> print(pbp.data)
-    Articles => 393 objects
-    Bites => 328 objects
-
-    # get a random Bite
-    >>> pbp.bite()
-    Bite(number=228, title='Create a Gravatar URL', level='Intermediate')
-
-    # filter:
-    >>> pbp.bite(level="beginner")
-    Bite(number=279, title='Armstrong numbers', level='Beginner')
-    >>> pbp.bite_str()
-    'Intermediate Bite #199. Multiple inheritance (__mro__)'
-
-    # get an article
-    >>> pbp.article()
-    Article(author='PyBites', title='Code Challenge 29 - Create a Simple Django App', tags=['codechallenges', 'Django', '100DaysOfDjango'])
-
-    # filter:
-    >>> art = pbp.article(title="pandas")
+    >>> fake.article()
+    Article(author='PyBites', title='Code Challenge 64 - PyCon ES 2019 Marvel Challenge', tags=['code challenge', 'challenges', 'data analysis', 'pycon', 'Marvel', 'data visualization', 'story telling', 'hacktoberfest'])
+    >>> art = fake.article()
     >>> art.author
-    'Cedric Sambre'
+    'PyBites'
     >>> art.title
-    'Analyzing covid-19 data with pandas and matplotlib'
-    >>> art.tags
-    ['guest', 'pandas', 'matplotlib', 'data analysis']
-    >>> art = pbp.article(tags="mindset")
-    >>> art.author
-    'Julian'
-    >>> art.title
-    'Break Fear to Boost Productivity'
-    >>> art.tags
-    ['productivity', 'motivation', 'mindset', 'fear']
+    'Twitter digest 2017 week 27'
+    >>> art.tags[:5]
+    ['twitter', 'news', 'tips', 'python', 'pybites']
+    >>> fake.article(title="pandas")
+    Article(author='Bob', title='Next Time I Will Use Pandas to Parse Html Tables', tags=['BeautifulSoup', 'regex', 'Pandas', 'parsing', 'data', 'data cleaning', 'energy', 'json', 'csv', 'html'])
+    >>> fake.bite(level="advanced")
+    Bite(number=160, title='15-way Rock Paper Scissors', level='Advanced')
+
+Exceptions
+----------
+
+If you filter on the wrong keyword arguments you get a `ValueError`::
+
+    >>> fake.bite(foo='bar')
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    File "/Users/bbelderbos/code/pybites-faker/pybites_faker/provider.py", line 43, in bite
+        return self.get_one("bites", **kwargs)
+    File "/Users/bbelderbos/code/pybites-faker/pybites_faker/provider.py", line 25, in get_one
+        raise ValueError(
+    ValueError: One or more invalid kw args: {'foo': 'bar'}, valid filters are: ('number', 'title', 'level')
+
+Same for article::
+
+    >>> fake.article(foo='bar')
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    File "/Users/bbelderbos/code/pybites-faker/pybites_faker/provider.py", line 64, in article
+        return self.get_one("articles", **kwargs)
+    File "/Users/bbelderbos/code/pybites-faker/pybites_faker/provider.py", line 25, in get_one
+        raise ValueError(
+    ValueError: One or more invalid kw args: {'foo': 'bar'}, valid filters are: ('author', 'title', 'tags')
+
+If you specify wrong filer criteria it raises a `NoDataForCriteria` exception::
+
+    >>> fake.bite(level="expert")
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    File "/Users/bbelderbos/code/pybites-faker/pybites_faker/provider.py", line 43, in bite
+        return self.get_one("bites", **kwargs)
+    File "/Users/bbelderbos/code/pybites-faker/pybites_faker/provider.py", line 36, in get_one
+        raise NoDataForCriteria(
+    pybites_faker.exceptions.NoDataForCriteria: No results for filter criteria: {'level': 'expert'}
+
 
 Tests
 -----
@@ -71,6 +92,6 @@ You can run the tests with::
 
     poetry run pytest
 
-If you run them often you might want to give it the cache file as argument::
+If you want to refresh the cache you can do so with::
 
-    poetry run pytest --cache=/tmp/pybites-fake-data.pkl
+    poetry run pytest --refresh_cache
