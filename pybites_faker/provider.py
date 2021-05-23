@@ -74,11 +74,3 @@ class PyBitesProvider(BaseProvider):
             range(START_DATE.year, TODAY.year + 1)
         )
         return START_DATE.replace(year=year)
-
-
-if __name__ == "__main__":
-    pbf = PyBitesProvider()
-    print(pbf.data)
-
-    from pprint import pprint as pp
-    pp(pbf.article(tags='pandas'))
