@@ -32,7 +32,7 @@ def data(cache):
 
 
 @pytest.fixture(scope="session")
-def pb_faker(data):
+def fake(data):
     fake = Faker()
     fake.add_provider(PyBitesProvider)
     return fake

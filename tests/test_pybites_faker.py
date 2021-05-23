@@ -10,75 +10,75 @@ LEVELS = ["intro", "beginner",
           "intermediate", "advanced"]
 
 
-def test_bite(pb_faker):
-    bite = pb_faker.bite()
+def test_bite(fake):
+    bite = fake.bite()
     assert type(bite) == Bite
     assert bite._fields == ("number", "title", "level")
 
 
-def test_bite_str(pb_faker):
-    bite = pb_faker.bite_str()
+def test_bite_str(fake):
+    bite = fake.bite_str()
     levels = "|".join(level.title() for level in LEVELS)
     pat = re.compile(
         rf"^({levels})\sBite #\d+\.\s.*$")
     assert pat.match(bite)
 
 
-def test_bite_number(pb_faker):
+def test_bite_number(fake):
     # TODO: support ranges?
-    bite = pb_faker.bite(number=3)
+    bite = fake.bite(number=3)
     assert "3" in str(bite.number)
 
 
-def test_pandas_bite(pb_faker):
-    bite = pb_faker.bite(title="pandas")
+def test_pandas_bite(fake):
+    bite = fake.bite(title="pandas")
     assert "pandas" in bite.title.lower()
 
 
 @pytest.mark.parametrize("level", LEVELS)
-def test_bite_level(pb_faker, level):
-    bite = pb_faker.bite(level=level)
+def test_bite_level(fake, level):
+    bite = fake.bite(level=level)
     assert bite.level.lower() == level
 
 
-def test_article(pb_faker):
-    article = pb_faker.article()
+def test_article(fake):
+    article = fake.article()
     assert type(article) == Article
     assert article._fields == ("author", "title", "tags")
 
 
-def test_pandas_article(pb_faker):
-    article = pb_faker.article(title='pandas')
+def test_pandas_article(fake):
+    article = fake.article(title='pandas')
     assert "pandas" in article.title.lower()
 
 
-def test_pandas_article_mixed_case(pb_faker):
-    article = pb_faker.article(title='pAnDaS')
+def test_pandas_article_mixed_case(fake):
+    article = fake.article(title='pAnDaS')
     assert "pandas" in article.title.lower()
 
 
-def test_mindset_tagged_article(pb_faker):
-    article = pb_faker.article(tags='mindset')
+def test_mindset_tagged_article(fake):
+    article = fake.article(tags='mindset')
     assert "mindset" in str(article.tags).lower()
 
 
-def test_python_article(pb_faker):
-    article = pb_faker.python_article()
+def test_python_article(fake):
+    article = fake.python_article()
     assert "python" in str(article.tags).lower()
 
 
-def test_wrong_object_searched(pb_faker):
+def test_wrong_object_searched(fake):
     with pytest.raises(NoDataForCriteria):
-        pb_faker.get_one("ninjas")
+        fake.get_one("ninjas")
 
 
 @pytest.mark.parametrize("method, kwargs", [
     ("bite", {"number1": 1}),
     ("article", {"author2": "darth vader"}),
 ])
-def test_wrong_search_kwargs(pb_faker, method, kwargs):
+def test_wrong_search_kwargs(fake, method, kwargs):
     with pytest.raises(ValueError):
-        getattr(pb_faker, method)(**kwargs)
+        getattr(fake, method)(**kwargs)
 
 
 @pytest.mark.parametrize("method, kwargs", [
@@ -89,17 +89,17 @@ def test_wrong_search_kwargs(pb_faker, method, kwargs):
     ("article", {"title": "some nonsense headline"}),
     ("article", {"tags": "dumb_tag_we_would_not_use"}),
 ])
-def test_no_matching_objects(pb_faker, method, kwargs):
+def test_no_matching_objects(fake, method, kwargs):
     with pytest.raises(NoDataForCriteria):
-        getattr(pb_faker, method)(**kwargs)
+        getattr(fake, method)(**kwargs)
 
 
-def test_pybites_cofounder(pb_faker):
-    assert pb_faker.pybites_cofounder() in {"Bob", "Julian"}
+def test_pybites_cofounder(fake):
+    assert fake.pybites_cofounder() in {"Bob", "Julian"}
 
 
-def test_pybites_birthday(pb_faker):
-    bday = pb_faker.pybites_birthday()
+def test_pybites_birthday(fake):
+    bday = fake.pybites_birthday()
     possible_years = list(range(2016, date.today().year + 1))
     assert bday.day == 19
     assert bday.month == 12
