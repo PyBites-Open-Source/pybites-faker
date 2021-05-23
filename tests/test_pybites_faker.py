@@ -104,3 +104,10 @@ def test_pybites_birthday(fake):
     assert bday.day == 19
     assert bday.month == 12
     assert bday.year in possible_years
+
+
+def test_pybites_tag(fake):
+    tags = fake.pybites_tag(n=10)
+    assert len(tags) == 10
+    # TODO: how to best test the weighting?
+    assert all(type(t) is str for t in tags)
