@@ -94,8 +94,4 @@ Tests
 
 You can run the tests with::
 
-    poetry run pytest
-
-If you want to refresh the cache you can do so with::
-
-    poetry run pytest --refresh_cache
+    poetry run tox
