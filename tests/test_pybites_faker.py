@@ -41,6 +41,12 @@ def test_bite_level(fake, level):
     assert bite.level.lower() == level
 
 
+@pytest.mark.parametrize("level", LEVELS)
+def test_bite_level_properties(fake, level):
+    bite = getattr(fake, f"{level}_bite")()
+    assert bite.level.lower() == level
+
+
 def test_article(fake):
     article = fake.article()
     assert type(article) == Article
